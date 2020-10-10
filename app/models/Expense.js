@@ -9,76 +9,109 @@ let expenseSchema = new Schema({
     groupId: {
         type: String,
         default: '',
-    },   
+    },
     createdOn: {
         type: Date,
         default: ""
     },
     createdBy: {
-        type: String,
-        default: ''
+        name: {
+            type: String,
+            default: '',
+        },
+        userId: {
+            type: String,
+            default: '',
+        },
+        email: {
+            type: String,
+            default: '',
+        }
+
     },
     updatedOn: {
         type: Date,
         default: ""
     },
-    updatedBy : {
-        type : String,
-        dafault: ""
+    updatedBy: {
+        name: {
+            type: String,
+            default: '',
+        },
+        userId: {
+            type: String,
+            default: '',
+        },
+        email: {
+            type: String,
+            default: '',
+        }
+
     },
     deletedOn: {
         type: Date,
         default: ""
     },
-    deletedBy : {
-        type : String,
-        dafault: ""
-    },
-    expenseAmount : {
-        type : Number,
-        default : 0
-    },
-    membersWithAmount : [
-        {
-            from : { 
-                type : String,
-                dafault: ""
-            },
-            to : { 
-                type : String,
-                dafault: ""
-            },
-            amount : {
-                type : Number,
-                default : 0
-            }
+    deletedBy: {
+        name: {
+            type: String,
+            default: '',
+        },
+        userId: {
+            type: String,
+            default: '',
+        },
+        email: {
+            type: String,
+            default: '',
         }
-    ],
-    //members : []
-    users : [
+
+    },
+    expenseAmount: {
+        type: Number,
+        default: 0
+    },
+    paidArray : [
         {
-            paidShare : {
-                type : Number,
-                default : 0
-            },
-            owedShare : {
-                type : Number,
-                default : 0
-            },
-            netBalance : {
-                type : Number,
-                default : 0
-            },
-            userId : {
+            userId: {
                 type: String,
                 default: '',
             },
-            name : {
+            name: {
                 type: String,
                 default: ''
+            },
+            email: {
+                type: String,
+                default: ''
+            },
+            amount: {
+                type: Number,
+                default: 0
+            }
+        }
+    ],
+
+    owedArray : [
+        {
+            userId: {
+                type: String,
+                default: '',
+            },
+            name: {
+                type: String,
+                default: ''
+            },
+            email: {
+                type: String,
+                default: ''
+            },
+            amount: {
+                type: Number,
+                default: 0
             }
         }
     ]
-    
+
 })
 mongoose.model('Expense', expenseSchema);

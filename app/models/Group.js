@@ -18,18 +18,17 @@ let groupSchema = new Schema({
         type: String,
         default: ''
     },
-    updatedOn: {
+    /*updatedOn: {
         type: Date,
         default: ""
     },
     updatedBy : {
         type : String,
         dafault: ""
-    },
-    members : [{}]
-    /*
-    originalDebts : [],
-    simplifiedDebts : []
-    */
+    },*/
+    members : [{
+        type: String,
+        default: ''
+    }],
 })
 mongoose.model('Group', groupSchema);

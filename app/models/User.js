@@ -18,7 +18,11 @@ let userSchema = new Schema({
       },
       password: {
         type: String,
-        default: 'passskdajakdjkadsj'
+        default: ''
+      },
+      validationToken: { //for reset password implementation
+        type: String,
+        default: ''
       },
       email: {
         type: String,

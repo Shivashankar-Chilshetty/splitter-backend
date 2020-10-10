@@ -45,7 +45,6 @@ const modelsPath = './app/models';
 const routesPath = './app/routes';
 
 app.all('*', function (req, res, next) {
-  // res.header('Access-Control-Allow-Credentials', true);
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
@@ -83,8 +82,8 @@ server.on('listening', onListening);
 
 
 //socket io connection handler
-//const socketLib = require('./app/libs/socketLib')
-//const socketServer = socketLib.setServer(server)
+const socketLib = require('./app/libs/socketLib')
+const socketServer = socketLib.setServer(server)
 //end socket io connection handler
 
 
@@ -124,7 +123,7 @@ function onListening() {
     : 'port ' + addr.port;
   ('Listening on ' + bind);
   logger.info('server listening on port' + addr.port, 'serverOnListeningHandler', 10);
-  let db = mongoose.connect(appConfig.db.uri, { useNewUrlParser: true });
+  let db = mongoose.connect(appConfig.db.uri, { useNewUrlParser: true, useFindAndModify: false });
 }
 
 process.on('unhandledRejection', (reason, p) => {

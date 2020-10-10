@@ -40,11 +40,11 @@ let verifyClaim = (token, secretKey, cb)=>{
 }
 
 let verifyClaimsWithoutSecret = (token, cb)=>{
-    jwt.verify(token, secretKey, (err, decoded)=>{
+    jwt.verify(token, secretKey, function(err, decoded){
         if(err){
             console.log('error while verifying token')
             console.log(err)
-            cb(err, data)
+            cb(err, decoded)
         }
         else{
             console.log('User-verified')

@@ -7,51 +7,86 @@ const eventEmitter = new events.EventEmitter();
 const tokenLib = require('./tokenLib')
 const response = require('./responseLib')
 
-let setServer = (server)=>{
-    let allOnlineUsers = []
+const HistoryModel = mongoose.model('History');
+const time = require('./timeLib')
+
+
+
+let setServer = (server) => {
+    //below 2 lines are-initialization of socket io library- after initializtion socket is now ready to use in server side
     let io = socketio.listen(server);
-    let myIo = io.of('')
-    myIo.on('connection', (socket)=>{
-        console.log('on connection emitting verify user')
-        socket.emit('verifyUser','')
-        socket.on('set-user',(authToken)=>{
-            console.log('set users called')
-            tokenLib.verifyClaimsWithoutSecret(authToken,(err,user)=>{
-                if(err){
-                    socket.emit('auth-error', {status:500, error:'please provide correct authToken'})
+    let myIo = io.of('/');      //global instance of socket
+
+    //below line makes initial (client-server) handshake
+    myIo.on('connection', (socket) => {
+        //console.log('on connecting --emitting verify user');
+        socket.emit('verifyUser', '');
+        socket.on('set-user', (authToken) => {
+            tokenLib.verifyClaimsWithoutSecret(authToken, (err, user) => {
+                if (err) {
+                    console.log('fail to verify user')
+                    socket.emit('auth-error', { status: 500, error: 'please provide correct authToken' })
                 }
-                else{
-                    console.log('user is verified. setting his details in onlineuserList[]')
+                else {
+                    //console.log('user is verified')
+                    //every socket connection that is made to the server has the internal id of its own, but we set & use our own id
                     let currentUser = user.data;
                     socket.userId = currentUser.userId;
                     let fullName = `${currentUser.firstName} ${currentUser.lastName}`
-                    console.log(`${fullName} is online`)
-                    socket.emit(currentUser.userId,"you are online")
-                    let userObj = { userId : currentUser.userId, fullName: fullName}
-                    allOnlineUsers.push(userObj)
-                    console.log(allOnlineUsers)
-                    socket.room = 'split'
-                    socket.join(socket.room)
-                    socket.to(socket.room).broadcast.emit('online-user-list', allOnlineUsers)
+                    console.log(`${fullName} is online`);
+                    //socket.emit(currentUser.userId,'you are online')
                 }
             })
-        })// end of listening set-user event
+        })//end listener of set-user
+
+
         socket.on('disconnect', () => {
-            // disconnect the user from socket
-            // remove the user from online list
-            // unsubscribe the user from his own channel
-
-            console.log("user is disconnected");
-            // console.log(socket.connectorName);
-            console.log(socket.userId);
-            var removeIndex = allOnlineUsers.map(function(user) { return user.userId; }).indexOf(socket.userId);
-            allOnlineUsers.splice(removeIndex,1)
-            console.log(allOnlineUsers)
+            console.log("user is disconnected")
+            console.log(socket.userId)
+            console.log('went offline')
+        })//end of disconnect
 
 
-        }) // end of on disconnect
+        socket.on('create-history', (data) => {
+            //console.log('history is creating')
+            data['historyId'] = shortId.generate()
+            //console.log(data)
+            eventEmitter.emit('save-history', data)
+        })
+
+
+        socket.on('notify-updates', (data) => {
+            //console.log(data)
+            myIo.emit(data.userId, data);
+        });
     })
 }
+
+
+eventEmitter.on('save-history', (data) => {
+    let newHistory = new HistoryModel({
+        historyId: data.historyId,
+        userId: data.userId,
+        groupId: data.groupId,
+        expenseId: data.expenseId,
+        message: data.message,
+        createdOn: time.now()
+    });
+    newHistory.save((err, result) => {
+        if (err) {
+            console.log(`error occured: ${err}`)
+        }
+        else if (result == undefined || result == null || result == '') {
+            console.log('history is not saved');
+        }
+        else {
+            console.log('history saved')
+            //console.log(result)
+        }
+    })
+})
+
+
 module.exports = {
     setServer: setServer
 }
