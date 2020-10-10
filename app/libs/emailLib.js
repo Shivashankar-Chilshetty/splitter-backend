@@ -17,7 +17,6 @@ let sendEmail = (sendEmailOptions) => {
     let mailOptions = {
         from: 'sushantss9151@gmail.com', // sender address
         to: sendEmailOptions.email, // list of receivers
-        //to: 'chilshetty77@gmail.com',
         subject: sendEmailOptions.subject, // Subject line
         html: sendEmailOptions.html // html body
     };
