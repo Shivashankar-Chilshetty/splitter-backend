@@ -437,8 +437,8 @@ let forgotPassword = (req, res) => {
                         name: tokenDetails.userDetails.firstName,
                         email: tokenDetails.userDetails.email,
                         subject: 'Reset Password Request',
-                        //html: `Hello <strong>  ${tokenDetails.userDetails.firstName}  </strong>,<br><br>You have requested to reset your password. Please find the below link<br><br><a href="www.shivashankarchillshetty.com/reset-password/${options.validationToken}">Reset password</a><br><br>Thank you<br>Shivashankar<br>CEO, Expense-splitter`
-                        html: `Hello <strong>  ${tokenDetails.userDetails.firstName}  </strong>,<br><br>You have requested to reset your password. Please find the below link<br><br><a href="http://localhost:4200/reset-password/${options.validationToken}">Reset password</a><br><br>Thank you<br>Shivashankar<br>CEO, Expense-splitter`
+                        html: `Hello <strong>  ${tokenDetails.userDetails.firstName}  </strong>,<br><br>You have requested to reset your password. Please find the below link<br><br><a href="www.shivashankarchillshetty.com/reset-password/${options.validationToken}">Reset password</a><br><br>Thank you<br>Shivashankar<br>CEO, Expense-splitter`
+                        //html: `Hello <strong>  ${tokenDetails.userDetails.firstName}  </strong>,<br><br>You have requested to reset your password. Please find the below link<br><br><a href="http://localhost:4200/reset-password/${options.validationToken}">Reset password</a><br><br>Thank you<br>Shivashankar<br>CEO, Expense-splitter`
                     }
                     setTimeout(() => {
                         emailLib.sendEmail(sendEmailOptions);
