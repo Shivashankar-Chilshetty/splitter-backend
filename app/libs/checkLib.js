@@ -12,19 +12,11 @@ let isEmpty = (value) => {
   }
 }
 
-let isAdmin = (value) =>{
-  if(value.endsWith('admin')){
-    return true;
-  }
-  else{
-    return false;
-  }
-}
+
 
 /**
  * exporting functions.
  */
 module.exports = {
-  isEmpty: isEmpty,
-  isAdmin: isAdmin
+  isEmpty: isEmpty
 }
