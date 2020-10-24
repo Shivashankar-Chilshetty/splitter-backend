@@ -44,7 +44,7 @@ let verifyClaimsWithoutSecret = (token, cb)=>{
         if(err){
             console.log('error while verifying token')
             console.log(err)
-            cb(err, decoded)
+            cb(err, data)
         }
         else{
             console.log('User-verified')
